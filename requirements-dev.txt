@@ -1,0 +1,10 @@
+-r requirements.txt
+pytest==7.4.0
+pytest-cov==4.1.0
+black==23.9.1
+flake8==6.0.0
+isort==5.12.0
+mypy==1.5.0
+pylint==2.17.5
+jupyter-contrib-nbextensions==0.7.0
+nbconvert==7.9.2
