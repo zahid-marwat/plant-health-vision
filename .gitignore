@@ -30,6 +30,7 @@ wheels/
 # Data and models
 data/raw/
 data/processed/
+!results/
 models/
 *.h5
 *.pth
