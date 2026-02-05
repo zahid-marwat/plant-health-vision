@@ -141,10 +141,22 @@ class ReportGenerator:
         Returns:
             Path to JSON file
         """
+        def to_builtin(value):
+            if isinstance(value, dict):
+                return {k: to_builtin(v) for k, v in value.items()}
+            if isinstance(value, list):
+                return [to_builtin(v) for v in value]
+            if hasattr(value, "item"):
+                try:
+                    return value.item()
+                except Exception:
+                    pass
+            return value
+
         report = {
             'model_name': model_name,
-            'overall_metrics': metrics,
-            'per_class_metrics': {str(k): v for k, v in per_class_metrics.items()}
+            'overall_metrics': to_builtin(metrics),
+            'per_class_metrics': {str(k): to_builtin(v) for k, v in per_class_metrics.items()}
         }
         
         json_path = self.output_dir / f'{model_name}_report.json'
@@ -177,32 +189,32 @@ class ReportGenerator:
         """
         html_content = []
         
-        html_content.append("""
+        html_content.append(f"""
         <!DOCTYPE html>
         <html>
         <head>
             <meta charset="UTF-8">
             <title>Plant Disease Detection - Evaluation Report</title>
             <style>
-                body { font-family: Arial, sans-serif; margin: 20px; background-color: #f5f5f5; }
-                .container { max-width: 1200px; margin: 0 auto; background-color: white; padding: 20px; border-radius: 5px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
-                h1 { color: #2c3e50; border-bottom: 3px solid #27ae60; padding-bottom: 10px; }
-                h2 { color: #34495e; margin-top: 30px; border-bottom: 2px solid #3498db; padding-bottom: 5px; }
-                table { width: 100%; border-collapse: collapse; margin: 20px 0; }
-                th, td { padding: 12px; text-align: left; border-bottom: 1px solid #ddd; }
-                th { background-color: #34495e; color: white; font-weight: bold; }
-                tr:hover { background-color: #f5f5f5; }
-                .metric-box { background-color: #ecf0f1; padding: 15px; margin: 10px 0; border-left: 4px solid #27ae60; }
-                .metric-value { font-size: 24px; font-weight: bold; color: #27ae60; }
-                img { max-width: 100%; height: auto; margin: 20px 0; border: 1px solid #ddd; border-radius: 3px; }
-                .footer { text-align: center; color: #7f8c8d; margin-top: 40px; font-size: 12px; }
+                body {{ font-family: Arial, sans-serif; margin: 20px; background-color: #f5f5f5; }}
+                .container {{ max-width: 1200px; margin: 0 auto; background-color: white; padding: 20px; border-radius: 5px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }}
+                h1 {{ color: #2c3e50; border-bottom: 3px solid #27ae60; padding-bottom: 10px; }}
+                h2 {{ color: #34495e; margin-top: 30px; border-bottom: 2px solid #3498db; padding-bottom: 5px; }}
+                table {{ width: 100%; border-collapse: collapse; margin: 20px 0; }}
+                th, td {{ padding: 12px; text-align: left; border-bottom: 1px solid #ddd; }}
+                th {{ background-color: #34495e; color: white; font-weight: bold; }}
+                tr:hover {{ background-color: #f5f5f5; }}
+                .metric-box {{ background-color: #ecf0f1; padding: 15px; margin: 10px 0; border-left: 4px solid #27ae60; }}
+                .metric-value {{ font-size: 24px; font-weight: bold; color: #27ae60; }}
+                img {{ max-width: 100%; height: auto; margin: 20px 0; border: 1px solid #ddd; border-radius: 3px; }}
+                .footer {{ text-align: center; color: #7f8c8d; margin-top: 40px; font-size: 12px; }}
             </style>
         </head>
         <body>
             <div class="container">
-                <h1>🌱 Plant Disease Detection - Evaluation Report</h1>
-                <p><strong>Model:</strong> {}</p>
-        """.format(model_name))
+                <h1>Plant Disease Detection - Evaluation Report</h1>
+                <p><strong>Model:</strong> {model_name}</p>
+        """)
         
         # Overall metrics section
         html_content.append("<h2>Overall Metrics</h2>")

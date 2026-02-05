@@ -175,7 +175,15 @@ class PyTorchPlantDiseaseDataset(Dataset):
         image = image.resize(self.img_size, Image.Resampling.LANCZOS)
         
         if self.transform:
-            image = self.transform(image)
+            # Albumentations expects numpy arrays and named arguments
+            image_np = np.array(image)
+            transformed = self.transform(image=image_np) if callable(self.transform) else None
+
+            if isinstance(transformed, dict) and 'image' in transformed:
+                image = transformed['image']
+            else:
+                # Fallback for torchvision-style transforms
+                image = self.transform(image)
         else:
             # Default: convert to tensor and normalize
             image = tf.keras.preprocessing.image.img_to_array(image)

@@ -7,7 +7,7 @@
 setup_venv.bat
 
 # 2. Verify the setup
-python -c "import torch, tensorflow, cv2; print('✓ All libraries installed')"
+python -c "import torch, tensorflow, cv2; print('All libraries installed')"
 ```
 
 ## Quick Start (Linux/Mac)
@@ -19,7 +19,7 @@ chmod +x setup_venv.sh
 source venv/bin/activate
 
 # 2. Verify the setup
-python -c "import torch, tensorflow, cv2; print('✓ All libraries installed')"
+python -c "import torch, tensorflow, cv2; print('All libraries installed')"
 ```
 
 ## Manual Setup (Alternative)
@@ -226,4 +226,4 @@ This project is licensed under the MIT License - see LICENSE file for details.
 
 ---
 
-**Happy coding! 🌱🚀**
+**Happy coding.**

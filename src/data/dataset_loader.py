@@ -131,7 +131,7 @@ class PlantVillageDatasetLoader:
                 total_files += n
                 
                 logger.info(
-                    f"✓ {class_name}: {len(splits_data['train'])} train, "
+                    f"OK {class_name}: {len(splits_data['train'])} train, "
                     f"{len(splits_data['val'])} val, {len(splits_data['test'])} test"
                 )
         

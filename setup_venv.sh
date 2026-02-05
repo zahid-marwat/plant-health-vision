@@ -14,7 +14,7 @@ if ! command -v python3 &> /dev/null; then
     exit 1
 fi
 
-echo "✓ Python found:"
+echo "Python found:"
 python3 --version
 
 # Create virtual environment
@@ -27,7 +27,7 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
-echo "✓ Virtual environment created"
+echo "Virtual environment created"
 
 # Activate virtual environment
 echo ""
@@ -39,7 +39,7 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
-echo "✓ Virtual environment activated"
+echo "Virtual environment activated"
 
 # Upgrade pip
 echo ""
@@ -56,7 +56,7 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
-echo "✓ Requirements installed"
+echo "Requirements installed"
 
 # Install dev dependencies
 echo ""
@@ -66,29 +66,29 @@ pip install -r requirements-dev.txt
 # Verify installation
 echo ""
 echo "Verifying installation..."
-python -c "import torch; print('✓ PyTorch:', torch.__version__)"
-python -c "import tensorflow; print('✓ TensorFlow:', tensorflow.__version__)"
-python -c "import cv2; print('✓ OpenCV:', cv2.__version__)"
+python -c "import torch; print('PyTorch:', torch.__version__)"
+python -c "import tensorflow; print('TensorFlow:', tensorflow.__version__)"
+python -c "import cv2; print('OpenCV:', cv2.__version__)"
 
 # Create project structure
 echo ""
 echo "Creating project directories..."
 mkdir -p data/raw data/processed models results logs
 
-echo "✓ Project directories created"
+echo "Project directories created"
 
 echo ""
 echo "╔════════════════════════════════════════════════════════════════╗"
-echo "║                    SETUP COMPLETED ✓                         ║"
+echo "║                    SETUP COMPLETED                           ║"
 echo "╚════════════════════════════════════════════════════════════════╝"
 echo ""
-echo "📝 NEXT STEPS:"
+echo "NEXT STEPS:"
 echo "   1. Download PlantVillage dataset from Kaggle"
 echo "   2. Extract to data/raw/"
 echo "   3. Run: python src/data/dataset_loader.py --organize"
 echo "   4. Run notebooks in order"
 echo "   5. Train model: python src/training/train_main.py --model resnet50"
 echo ""
-echo "🚀 To activate the environment in new terminals:"
+echo "To activate the environment in new terminals:"
 echo "   source venv/bin/activate"
 echo ""

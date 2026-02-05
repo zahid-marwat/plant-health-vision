@@ -1,4 +1,4 @@
-# Plant Disease Detection - Computer Vision Project 🌱
+# Plant Disease Detection - Computer Vision Project
 
 A production-ready deep learning system for automated plant disease detection using the PlantVillage Dataset. This project leverages state-of-the-art CNN architectures including ResNet50, MobileNetV2, EfficientNetB0, and YOLOv8 to identify crop diseases with high accuracy, enabling early intervention for disease management.
 
@@ -27,26 +27,26 @@ This project implements an end-to-end computer vision pipeline for plant disease
 
 ### Key Features
 
-✅ **Multiple Model Architectures**
+**Multiple Model Architectures**
 - ResNet50 (deep residual learning)
 - MobileNetV2 (lightweight for edge deployment)
 - EfficientNetB0 (efficiency-optimized)
 - YOLOv8 (real-time object detection)
 - Custom CNN baseline
 
-✅ **Robust Data Pipeline**
+**Robust Data Pipeline**
 - Automatic dataset download and organization
 - Class balancing techniques
 - Advanced image augmentation (rotation, zoom, brightness, crops)
 - Train/validation/test splits (70/15/15)
 
-✅ **Production-Ready**
+**Production-Ready**
 - Early stopping and learning rate scheduling
 - Model checkpointing and TensorBoard logging
 - Comprehensive error handling and logging
 - Type hints and extensive documentation
 
-✅ **Deployment Options**
+**Deployment Options**
 - Single image inference script
 - Batch prediction for multiple images
 - Flask/FastAPI web application
@@ -130,7 +130,8 @@ plant-health-vision/
 │   │   ├── __init__.py
 │   │   ├── evaluator.py
 │   │   ├── visualizer.py
-│   │   └── report_generator.py
+│   │   ├── report_generator.py
+│   │   └── run_evaluation.py
 │   └── utils/
 │       ├── __init__.py
 │       └── logging_config.py
@@ -187,11 +188,15 @@ pip install -r requirements-dev.txt
 
 ### 4. Download PlantVillage Dataset
 
+Download manually from: [Kaggle PlantVillage Dataset](https://www.kaggle.com/datasets/arjuntejaswi/plant-village)
+
+If you already have the original PlantVillage repository layout, organize it with:
+
 ```bash
-python src/data/dataset_loader.py --download --output_dir data/raw
+python src/data/dataset_loader.py --raw_dir "data/raw/PlantVillage-Dataset-master/PlantVillage-Dataset-master/raw/color" --processed_dir "data/processed"
 ```
 
-Or download manually from: [Kaggle PlantVillage Dataset](https://www.kaggle.com/datasets/arjuntejaswi/plant-village)
+This workspace has been processed using that layout into train/val/test splits under data/processed.
 
 ## Usage
 
@@ -199,7 +204,7 @@ Or download manually from: [Kaggle PlantVillage Dataset](https://www.kaggle.com/
 
 ```bash
 # Prepare dataset with train/val/test splits
-python src/data/dataset_loader.py --organize --output_dir data/processed
+python src/data/dataset_loader.py --raw_dir "data/raw/PlantVillage-Dataset-master/PlantVillage-Dataset-master/raw/color" --processed_dir data/processed
 ```
 
 ### 2. Train a Model
@@ -228,10 +233,12 @@ python src/training/train_main.py \
 ### 3. Evaluate Model
 
 ```bash
-# Generate evaluation report
-python src/evaluation/report_generator.py \
-  --model_path models/resnet50_best.pth \
-  --test_dir data/processed/test
+# Generate evaluation reports and visualizations
+python -m src.evaluation.run_evaluation \
+  --model_name baseline_cnn \
+  --model_path models/baseline_cnn_final.pth \
+  --data_dir data/processed \
+  --output_dir results
 ```
 
 ### 4. Single Image Inference
@@ -316,27 +323,83 @@ jupyter notebook
 
 ## Results & Performance
 
-### Model Comparison (on PlantVillage Test Set)
+### Dataset Snapshot (Processed)
 
-| Model | Accuracy | Precision | Recall | F1-Score | Inference Time | Parameters |
-|-------|----------|-----------|--------|----------|----------------|------------|
-| Baseline CNN | 85.2% | 0.843 | 0.852 | 0.847 | 15ms | 2.1M |
-| ResNet50 | 97.8% | 0.978 | 0.978 | 0.978 | 35ms | 23.5M |
-| MobileNetV2 | 95.6% | 0.956 | 0.956 | 0.956 | 12ms | 3.5M |
-| EfficientNetB0 | 96.4% | 0.964 | 0.964 | 0.964 | 18ms | 5.3M |
-| YOLOv8 | 94.2% | 0.942 | 0.942 | 0.942 | 22ms | 6.3M |
+| Item | Value |
+|------|-------|
+| Total images | 54,305 |
+| Classes | 38 |
+| Train split | 37,997 |
+| Validation split | 8,129 |
+| Test split | 8,179 |
+
+### Latest Baseline Run (Feb 4, 2026)
+
+**Model:** Baseline CNN (1 epoch, CPU) on full PlantVillage test split
+
+| Metric | Value |
+|--------|-------|
+| Accuracy | 66.32% |
+| Precision (macro) | 0.5692 |
+| Recall (macro) | 0.5179 |
+| F1 (macro) | 0.5021 |
+| Precision (weighted) | 0.6668 |
+| Recall (weighted) | 0.6632 |
+| F1 (weighted) | 0.6357 |
+
+### Model Comparison (Status)
+
+| Model | Accuracy | Precision | Recall | F1-Score | Notes |
+|-------|----------|-----------|--------|----------|-------|
+| Baseline CNN | 66.32% | 0.6668 (weighted) | 0.6632 (weighted) | 0.6357 (weighted) | 1 epoch, CPU |
+| ResNet50 | TBD | TBD | TBD | TBD | Not run yet |
+| MobileNetV2 | TBD | TBD | TBD | TBD | Not run yet |
+| EfficientNetB0 | TBD | TBD | TBD | TBD | Not run yet |
+| YOLOv8 | TBD | TBD | TBD | TBD | Not run yet |
 
 ### Class-Specific Performance
 
-Detailed per-disease accuracy in `results/evaluation_report.html`
+Detailed per-disease metrics in [results/baseline_cnn_report.html](results/baseline_cnn_report.html)
+
+Additional report artifacts:
+- [results/baseline_cnn_evaluation_report.txt](results/baseline_cnn_evaluation_report.txt)
+- [results/baseline_cnn_metrics.csv](results/baseline_cnn_metrics.csv)
+- [results/baseline_cnn_report.json](results/baseline_cnn_report.json)
 
 ### Visualizations Generated
 
 - **Confusion Matrix**: Shows classification accuracy per disease
 - **ROC Curves**: Receiver Operating Characteristic for each disease
 - **Training History**: Loss and accuracy curves
-- **Grad-CAM Heatmaps**: Visualization of model attention
-- **Sample Predictions**: True vs predicted labels with confidence
+- **Per-Class Metrics**: Precision/Recall/F1 for top classes
+
+#### Example Outputs
+
+![Confusion Matrix](results/confusion_matrix.png)
+
+![ROC Curves](results/roc_curves.png)
+
+![Per-Class Metrics](results/per_class_metrics.png)
+
+![Training History](results/training_history.png)
+
+### Final Results & Analytics (Baseline CNN)
+
+This baseline run provides a verified end-to-end pipeline check and a reproducible reference point. Full analytics artifacts are tracked in the results directory:
+
+- [results/baseline_cnn_report.html](results/baseline_cnn_report.html)
+- [results/baseline_cnn_report.json](results/baseline_cnn_report.json)
+- [results/baseline_cnn_metrics.csv](results/baseline_cnn_metrics.csv)
+- [results/baseline_cnn_evaluation_report.txt](results/baseline_cnn_evaluation_report.txt)
+
+### Repo-Visible Examples
+
+These examples are committed artifacts rendered directly in GitHub:
+
+- Confusion Matrix: [results/confusion_matrix.png](results/confusion_matrix.png)
+- ROC Curves (Top classes): [results/roc_curves.png](results/roc_curves.png)
+- Per-Class Metrics (Top classes): [results/per_class_metrics.png](results/per_class_metrics.png)
+- Training History: [results/training_history.png](results/training_history.png)
 
 ## Configuration
 
@@ -482,4 +545,4 @@ For issues, questions, or suggestions:
 
 ---
 
-**Happy farming! 🚀 Together, let's protect global food security through AI.** 🌾
+**Happy farming. Together, let's protect global food security through AI.**

@@ -187,7 +187,7 @@ class ModelTrainer:
                 self.best_val_loss = val_loss
                 self.patience_counter = 0
                 self.save_checkpoint(epoch, val_loss)
-                logger.info("✓ Validation loss improved!")
+                logger.info("Validation loss improved.")
             else:
                 self.patience_counter += 1
                 logger.info(f"Patience: {self.patience_counter}/{self.patience}")

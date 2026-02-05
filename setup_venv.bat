@@ -16,7 +16,7 @@ if errorlevel 1 (
     exit /b 1
 )
 
-echo ✓ Python found:
+echo Python found:
 python --version
 
 REM Create virtual environment
@@ -30,7 +30,7 @@ if errorlevel 1 (
     exit /b 1
 )
 
-echo ✓ Virtual environment created
+echo Virtual environment created
 
 REM Activate virtual environment
 echo.
@@ -43,7 +43,7 @@ if errorlevel 1 (
     exit /b 1
 )
 
-echo ✓ Virtual environment activated
+echo Virtual environment activated
 
 REM Upgrade pip
 echo.
@@ -61,7 +61,7 @@ if errorlevel 1 (
     exit /b 1
 )
 
-echo ✓ Requirements installed
+echo Requirements installed
 
 REM Install dev dependencies
 echo.
@@ -69,15 +69,15 @@ echo Installing development dependencies...
 pip install -r requirements-dev.txt
 
 if errorlevel 1 (
-    echo ⚠ Failed to install dev requirements (non-critical)
+    echo WARNING: Failed to install dev requirements (non-critical)
 )
 
 REM Verify installation
 echo.
 echo Verifying installation...
-python -c "import torch; print('✓ PyTorch:', torch.__version__)"
-python -c "import tensorflow; print('✓ TensorFlow:', tensorflow.__version__)"
-python -c "import cv2; print('✓ OpenCV:', cv2.__version__)"
+python -c "import torch; print('PyTorch:', torch.__version__)"
+python -c "import tensorflow; print('TensorFlow:', tensorflow.__version__)"
+python -c "import cv2; print('OpenCV:', cv2.__version__)"
 
 REM Create project structure
 echo.
@@ -88,14 +88,14 @@ if not exist "models" mkdir models
 if not exist "results" mkdir results
 if not exist "logs" mkdir logs
 
-echo ✓ Project directories created
+echo Project directories created
 
 echo.
 echo ╔════════════════════════════════════════════════════════════════╗
-echo ║                    SETUP COMPLETED ✓                         ║
+echo ║                    SETUP COMPLETED                           ║
 echo ╚════════════════════════════════════════════════════════════════╝
 echo.
-echo 📝 NEXT STEPS:
+echo NEXT STEPS:
 echo    1. Download PlantVillage dataset from Kaggle
 echo    2. Extract to data/raw/
 echo    3. Run: python src/data/dataset_loader.py --organize
@@ -106,10 +106,10 @@ echo       - 03_baseline_model.ipynb
 echo       - 04_model_comparison.ipynb
 echo    5. Train model: python src/training/train_main.py --model resnet50
 echo.
-echo 🚀 STARTING WEB API:
+echo STARTING WEB API:
 echo    python inference/app.py --port 8000
 echo.
-echo 📚 DOCUMENTATION:
+echo DOCUMENTATION:
 echo    - See README.md for detailed instructions
 echo    - Check config.py for hyperparameter tuning
 echo.

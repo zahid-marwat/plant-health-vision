@@ -39,7 +39,7 @@ class PlantDiseaseAugmentor:
             A.RandomBrightnessContrast(brightness_limit=0.2, contrast_limit=0.2, p=p),
             A.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
             ToTensorV2()
-        ], bbox_params=A.BboxParams(format='pascal_voc', min_visibility=0.3))
+        ])
 
     @staticmethod
     def get_val_transforms(
