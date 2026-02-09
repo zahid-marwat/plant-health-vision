@@ -40,6 +40,14 @@ models/
 
 # Results
 results/
+!results/
+!results/*.png
+!results/*.jpg
+!results/*.jpeg
+!results/*.html
+!results/*.json
+!results/*.txt
+!results/*.csv
 runs/
 logs/
 
@@ -61,3 +69,4 @@ logs/
 
 # CSV files (processed data)
 *.csv
+!results/*.csv
